@@ -49,6 +49,7 @@ func main() {
 
 		return se.Next()
 	})
+	print("iniciando backend clinicaBackendPB")
 	api.Register(app)
 	hooks.Register(app)
 	crons.Register(app)

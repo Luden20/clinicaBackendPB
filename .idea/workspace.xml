@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="fix" />
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="fix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +33,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/Luden20/pocketbaseExtendedEmpty.git",
+    "url": "https://github.com/Luden20/clinicaBackendPB.git",
     "accountId": "85eb6a91-77ce-46be-af0e-926dcce85217"
   }
 }]]></component>
@@ -66,14 +69,14 @@
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/GITHUB/pocketbaseExtendedEmpty",
+    "last_opened_file_path": "C:/GITHUB/clinicaBackendPB",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
-  <component name="RunManager" selected="Go Build.pocketbase">
+  <component name="RunManager" selected="Go Build.crearMigraciones">
     <configuration name="crearMigraciones" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="pocketbaseCustom" />
       <working_directory value="$PROJECT_DIR$" />
@@ -121,8 +124,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-gosdk-f466f9b0953e-3d2cccfc42a2-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-252.25557.189" />
-        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-GO-252.25557.189" />
+        <option value="bundled-gosdk-f466f9b0953e-146d08934cbf-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-252.27397.100" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-GO-252.27397.100" />
       </set>
     </attachedChunks>
   </component>
