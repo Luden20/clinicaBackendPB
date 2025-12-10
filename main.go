@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,12 +11,13 @@ import (
 	_ "pocketbaseCustom/migrations"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/ses"
 	"github.com/joho/godotenv"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-	"github.com/resend/resend-go/v3"
 
 	"pocketbaseCustom/internal/utils"
 )
@@ -25,26 +25,44 @@ import (
 func main() {
 	app := pocketbase.New()
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
-	ctx := context.TODO()
 	_ = godotenv.Load()
-	singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
+	singleton := utils.GetInstance()
 	rol := os.Getenv("EMAIL_ROL")
 	if rol == "" {
 		rol = "info"
 	}
-
-	params := &resend.SendEmailRequest{
-		From:    "Clinica Veterinaria Los Chillos <" + rol + "@clinicaveterinarialoschillos.com>",
-		To:      []string{os.Getenv("EMAIL_INIT_DIR")},
-		Subject: "Despliegue exitoso",
-		Html:    "<p>Funciona!</p>",
+	input := &ses.SendEmailInput{
+		Destination: &ses.Destination{
+			CcAddresses: []*string{},
+			ToAddresses: []*string{
+				aws.String(os.Getenv("EMAIL_INIT_DIR")),
+			},
+		},
+		Message: &ses.Message{
+			Body: &ses.Body{
+				Html: &ses.Content{
+					Charset: aws.String("UTF-8"),
+					Data:    aws.String("<h1> Funciona xd </h1>"),
+				},
+				Text: &ses.Content{
+					Charset: aws.String("UTF-8"),
+					Data:    aws.String("Funciona awebo"),
+				},
+			},
+			Subject: &ses.Content{
+				Charset: aws.String("UTF-8"),
+				Data:    aws.String("Prueba local"),
+			},
+		},
+		Source: aws.String("info@clinicaveterinarialoschillos.com"),
 	}
 
-	sent, err := singleton.Client.Emails.SendWithContext(ctx, params)
+	// Attempt to send the email.
+	result, err := singleton.Client.SendEmail(input)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	fmt.Println(sent.Id)
+	fmt.Println(result)
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		// enable auto creation of migration files when making collection changes in the Dashboard
 		// (the isGoRun check is to enable it only during development)

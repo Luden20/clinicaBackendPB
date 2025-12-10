@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.2" />
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.5">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/utils/email_client_singleton.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email_client_singleton.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -164,7 +170,10 @@
     <MESSAGE value="email v1" />
     <MESSAGE value="email v1.1" />
     <MESSAGE value="email v1.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="email v1.2" />
+    <MESSAGE value="email v1.3" />
+    <MESSAGE value="email v1.4" />
+    <MESSAGE value="email v1.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="email v1.5" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

@@ -2,15 +2,18 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"sync"
 
-	"github.com/resend/resend-go/v3"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ses"
 )
 
 var lock = &sync.Mutex{}
 
 type email_client struct {
-	Client *resend.Client
+	Client *ses.SES
 }
 
 var singleInstance *email_client
@@ -21,8 +24,14 @@ func GetInstance(key ...string) *email_client {
 		defer lock.Unlock()
 		if singleInstance == nil {
 			fmt.Println("Creating email_client instance now.")
+			sess, err := session.NewSession(&aws.Config{
+				Region: aws.String(os.Getenv("AWS_REGION")),
+			})
+			if err != nil {
+				panic(err)
+			}
 			singleInstance = &email_client{
-				Client: resend.NewClient(key[0]),
+				Client: ses.New(sess),
 			}
 		} else {
 			fmt.Println("Single instance already created.")
