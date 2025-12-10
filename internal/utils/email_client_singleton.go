@@ -18,7 +18,7 @@ type email_client struct {
 
 var singleInstance *email_client
 
-func GetInstance(key ...string) *email_client {
+func GetEmailClientInstance() *email_client {
 	if singleInstance == nil {
 		lock.Lock()
 		defer lock.Unlock()
