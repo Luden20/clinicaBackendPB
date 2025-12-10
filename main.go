@@ -28,9 +28,13 @@ func main() {
 	ctx := context.TODO()
 	_ = godotenv.Load()
 	singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
+	rol := os.Getenv("EMAIL_ROL")
+	if rol == "" {
+		rol = "info"
+	}
 
 	params := &resend.SendEmailRequest{
-		From:    "Clinica Veterinaria Los Chillos <info@clinicaveterinarialoschillos.com>",
+		From:    "Clinica Veterinaria Los Chillos <" + rol + "@clinicaveterinarialoschillos.com>",
 		To:      []string{os.Getenv("EMAIL_INIT_DIR")},
 		Subject: "Despliegue exitoso",
 		Html:    "<p>Funciona!</p>",
