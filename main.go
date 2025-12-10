@@ -26,7 +26,7 @@ func main() {
 	app := pocketbase.New()
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
 	ctx := context.TODO()
-	_ := godotenv.Load()
+	_ = godotenv.Load()
 	singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
 	params := &resend.SendEmailRequest{
 		From:    "Clinica Veterinaria Los Chillos <info@clinicaveterinarialoschillos.com\n\n>",
