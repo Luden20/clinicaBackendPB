@@ -2,7 +2,11 @@ module pocketbaseCustom
 
 go 1.25
 
-require github.com/pocketbase/pocketbase v0.30.1
+require (
+	github.com/joho/godotenv v1.5.1
+	github.com/pocketbase/pocketbase v0.30.1
+	github.com/resend/resend-go/v3 v3.0.0
+)
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -10,17 +12,38 @@ import (
 	_ "pocketbaseCustom/migrations"
 	"strings"
 
+	"github.com/joho/godotenv"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/resend/resend-go/v3"
+
+	"pocketbaseCustom/internal/utils"
 )
 
 func main() {
 	app := pocketbase.New()
-	// loosely check if it was executed using "go run"
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
+	ctx := context.TODO()
+	err := godotenv.Load()
+	if err == nil {
+		singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
+		params := &resend.SendEmailRequest{
+			From:    "Clinica Veterinaria Los Chillos <info@clinicaveterinarialoschillos.com\n\n>",
+			To:      []string{os.Getenv("EMAIL_INIT_DIR")},
+			Subject: "Despliegue exitoso",
+			Html:    "<p>Funciona!</p>",
+		}
 
+		sent, err := singleton.Client.Emails.SendWithContext(ctx, params)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(sent.Id)
+	} else {
+		fmt.Println(err)
+	}
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		// enable auto creation of migration files when making collection changes in the Dashboard
 		// (the isGoRun check is to enable it only during development)

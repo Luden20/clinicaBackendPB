@@ -2,3 +2,4 @@ output/
 pb_data/
 crearMigraciones.exe
 pocketbase.exe
+.env
