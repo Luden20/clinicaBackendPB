@@ -26,24 +26,20 @@ func main() {
 	app := pocketbase.New()
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
 	ctx := context.TODO()
-	err := godotenv.Load()
-	if err == nil {
-		singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
-		params := &resend.SendEmailRequest{
-			From:    "Clinica Veterinaria Los Chillos <info@clinicaveterinarialoschillos.com\n\n>",
-			To:      []string{os.Getenv("EMAIL_INIT_DIR")},
-			Subject: "Despliegue exitoso",
-			Html:    "<p>Funciona!</p>",
-		}
-
-		sent, err := singleton.Client.Emails.SendWithContext(ctx, params)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(sent.Id)
-	} else {
-		fmt.Println(err)
+	_ := godotenv.Load()
+	singleton := utils.GetInstance(os.Getenv("EMAIL_KEY"))
+	params := &resend.SendEmailRequest{
+		From:    "Clinica Veterinaria Los Chillos <info@clinicaveterinarialoschillos.com\n\n>",
+		To:      []string{os.Getenv("EMAIL_INIT_DIR")},
+		Subject: "Despliegue exitoso",
+		Html:    "<p>Funciona!</p>",
 	}
+
+	sent, err := singleton.Client.Emails.SendWithContext(ctx, params)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(sent.Id)
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		// enable auto creation of migration files when making collection changes in the Dashboard
 		// (the isGoRun check is to enable it only during development)
