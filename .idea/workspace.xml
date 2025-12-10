@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.6, migracion a aws ses">
-      <change afterPath="$PROJECT_DIR$/internal/utils/email.go" afterDir="false" />
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.7, correo de despliegue">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/utils/email_client_singleton.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email_client_singleton.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/utils/email.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +171,8 @@
     <MESSAGE value="email v1.4" />
     <MESSAGE value="email v1.5" />
     <MESSAGE value="email v1.6, migracion a aws ses" />
-    <option name="LAST_COMMIT_MESSAGE" value="email v1.6, migracion a aws ses" />
+    <MESSAGE value="email v1.7, correo de despliegue" />
+    <option name="LAST_COMMIT_MESSAGE" value="email v1.7, correo de despliegue" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

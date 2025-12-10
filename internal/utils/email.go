@@ -46,7 +46,7 @@ func InitEmailService() {
 	// Attempt to send the email.
 	result, err := singleton.Client.SendEmail(input)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	fmt.Println(result)
 }
