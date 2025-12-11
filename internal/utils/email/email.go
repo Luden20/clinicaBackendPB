@@ -27,7 +27,12 @@ func SendEmail(app core.App, To []*string, slugPlantilla string, data map[string
 			"slug": slugPlantilla,
 		})
 	if err != nil {
+		fmt.Println(err)
 		app.Logger().Error("Plantilla no encotrada para correo " + slugPlantilla)
+		return
+	}
+	enviar := plantilla.GetBool("enviar")
+	if !enviar {
 		return
 	}
 	contenido := plantilla.GetString("contenido")
@@ -70,6 +75,7 @@ func SendEmail(app core.App, To []*string, slugPlantilla string, data map[string
 	result, err := singleton.Client.SendEmail(input)
 	if err != nil {
 		fmt.Println(err)
+		app.Logger().Error("Send Email Error: " + err.Error())
 	}
 	fmt.Println(result)
 }
