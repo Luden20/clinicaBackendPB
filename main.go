@@ -7,7 +7,7 @@ import (
 	"pocketbaseCustom/internal/api"
 	"pocketbaseCustom/internal/crons"
 	"pocketbaseCustom/internal/hooks"
-	"pocketbaseCustom/internal/utils"
+	"pocketbaseCustom/internal/utils/email"
 	_ "pocketbaseCustom/migrations"
 	"strings"
 
@@ -22,7 +22,6 @@ func main() {
 	app := pocketbase.New()
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
 	_ = godotenv.Load()
-	utils.InitEmailService()
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		// enable auto creation of migration files when making collection changes in the Dashboard
 		// (the isGoRun check is to enable it only during development)
@@ -36,6 +35,7 @@ func main() {
 		return se.Next()
 	})
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+		email.InitEmailService(app)
 		// register "GET /hello/{name}" route (allowed for everyone)
 		se.Router.GET("/hello/{name}", func(e *core.RequestEvent) error {
 			name := e.Request.PathValue("name")
@@ -55,7 +55,9 @@ func main() {
 	api.Register(app)
 	hooks.Register(app)
 	crons.Register(app)
+
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
+
 }

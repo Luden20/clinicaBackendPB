@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.7, cse elimina el panic" />
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.7, cse elimina el panic">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/utils/email.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email/email.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/utils/email_client_singleton.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email/email_client_singleton.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +79,12 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager" selected="Go Build.pocketbase">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\GITHUB\clinicaBackendPB\internal\utils\email" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.crearMigraciones">
     <configuration name="crearMigraciones" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="pocketbaseCustom" />
       <working_directory value="$PROJECT_DIR$" />
