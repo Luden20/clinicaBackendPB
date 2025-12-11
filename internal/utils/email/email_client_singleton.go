@@ -12,13 +12,13 @@ import (
 
 var lock = &sync.Mutex{}
 
-type EmailClient struct {
+type InternalEmailClient struct {
 	Client *ses.SES
 }
 
-var singleInstance *EmailClient
+var singleInstance *InternalEmailClient
 
-func GetEmailClientInstance() *EmailClient {
+func GetEmailClientInstance() *InternalEmailClient {
 	if singleInstance == nil {
 		lock.Lock()
 		defer lock.Unlock()
@@ -30,7 +30,7 @@ func GetEmailClientInstance() *EmailClient {
 			if err != nil {
 				panic(err)
 			}
-			singleInstance = &EmailClient{
+			singleInstance = &InternalEmailClient{
 				Client: ses.New(sess),
 			}
 		} else {
