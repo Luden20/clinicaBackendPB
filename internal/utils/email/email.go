@@ -38,6 +38,15 @@ func SendEmail(app core.App, To []*string, slugPlantilla string, data map[string
 	if rol == "" {
 		rol = "info"
 	}
+	footer, err := app.FindFirstRecordByFilter(
+		"plantillas",
+		"slug={:slug}",
+		dbx.Params{
+			"slug": "footer",
+		})
+	if err == nil {
+		contenidoLleno = contenidoLleno + footer.GetString("contenido")
+	}
 	input := &ses.SendEmailInput{
 		Destination: &ses.Destination{
 			CcAddresses: []*string{},

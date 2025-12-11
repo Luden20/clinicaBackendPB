@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.8 migracion hacia funcion generica de emails y plantillas guardadas en la bd">
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="email v1.10 fix en el nombre">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/utils/email/email.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/utils/email/email.go" afterDir="false" />
     </list>
@@ -179,7 +179,9 @@
     <MESSAGE value="email v1.7, correo de despliegue" />
     <MESSAGE value="email v1.7, cse elimina el panic" />
     <MESSAGE value="email v1.8 migracion hacia funcion generica de emails y plantillas guardadas en la bd" />
-    <option name="LAST_COMMIT_MESSAGE" value="email v1.8 migracion hacia funcion generica de emails y plantillas guardadas en la bd" />
+    <MESSAGE value="email v1.9 fix en destinatarios" />
+    <MESSAGE value="email v1.10 fix en el nombre" />
+    <option name="LAST_COMMIT_MESSAGE" value="email v1.10 fix en el nombre" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
