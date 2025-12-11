@@ -18,7 +18,7 @@ func RenderTemplate(html string, data map[string]string) string {
 	}
 	return html
 }
-func SendEmail(app core.App, To []string, slugPlantilla string, data map[string]string) {
+func SendEmail(app core.App, To []*string, slugPlantilla string, data map[string]string) {
 	singleton := GetEmailClientInstance()
 	plantilla, err := app.FindFirstRecordByFilter(
 		"plantillas",
@@ -41,9 +41,7 @@ func SendEmail(app core.App, To []string, slugPlantilla string, data map[string]
 	input := &ses.SendEmailInput{
 		Destination: &ses.Destination{
 			CcAddresses: []*string{},
-			ToAddresses: []*string{
-				aws.String(os.Getenv("EMAIL_INIT_DIR")),
-			},
+			ToAddresses: To,
 		},
 		Message: &ses.Message{
 			Body: &ses.Body{
@@ -67,7 +65,8 @@ func SendEmail(app core.App, To []string, slugPlantilla string, data map[string]
 	fmt.Println(result)
 }
 func InitEmailService(app core.App) {
-	destinatario := []string{os.Getenv("EMAIL_INIT_DIR")}
+	admin := os.Getenv("EMAIL_INIT_DIR")
+	destinatario := []*string{&admin}
 	SendEmail(app, destinatario, "init", map[string]string{
 		"ambiente": os.Getenv("APP_DEV"),
 		"tiempo":   time.Now().String(),
