@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="migracion para modulo de facturas" />
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="migracion para modulo de facturas">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="30" />
+    <option name="cachedIndexableFilesCount" value="31" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -94,17 +96,17 @@
 }</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1782734494090" />
-    <option name="spentUsd" value="0.0674173" />
+    <option name="spentUsd" value="0.0706908" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="4" />
+    <option name="suspendCountdown" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\GITHUB\clinicaBackendPB\internal\utils\email" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.pocketbase">
+  <component name="RunManager" selected="Go Build.crearMigraciones">
     <configuration name="crearMigraciones" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="pocketbaseCustom" />
       <working_directory value="$PROJECT_DIR$" />
