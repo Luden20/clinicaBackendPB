@@ -1,0 +1,11 @@
+output/
+pb_data/
+crearMigraciones.exe
+pocketbase.exe
+.env
+dist/
+dist.prev/
+dist.failed/
+backups/
+.last-backup
+pb_data.failed/
