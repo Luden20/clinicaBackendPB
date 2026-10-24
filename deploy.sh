@@ -32,7 +32,10 @@ deploy() {
   git fetch -q origin release
   echo "   actual: $(cat dist/build-info.txt 2>/dev/null || echo 'nada')"
   echo "   nueva:  $(git show origin/release:dist/build-info.txt)"
-  if cmp -s <(git show origin/release:dist/build-info.txt) dist/build-info.txt 2>/dev/null; then
+  # En un clon recién hecho dist/ ya coincide con la release pero el servicio
+  # aún no existe: solo se omite si además está corriendo.
+  if cmp -s <(git show origin/release:dist/build-info.txt) dist/build-info.txt 2>/dev/null \
+     && systemctl is-active -q "$SERVICE"; then
     echo "Ya está desplegada."; exit 0
   fi
   local migrations
