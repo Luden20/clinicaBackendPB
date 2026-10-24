@@ -47,12 +47,16 @@ if (-not $NoPush) {
 Step 'go build linux-amd64'
 if (Test-Path $Dist) { Remove-Item $Dist -Recurse -Force }
 New-Item -ItemType Directory -Path $Dist | Out-Null
+# Exactamente la toolchain de go.mod: con Go 1.27 PocketBase v0.30 entra en
+# recursión infinita en Collection.UnmarshalJSON y migrate up revienta.
+$toolchain = (Select-String -Path go.mod -Pattern '^toolchain\s+(\S+)').Matches[0].Groups[1].Value
+$env:GOTOOLCHAIN = $toolchain
 $env:CGO_ENABLED = '0'; $env:GOOS = 'linux'; $env:GOARCH = 'amd64'
 try {
     go build -trimpath -ldflags '-s -w' -o (Join-Path $Dist 'pocketbase') .
 }
 finally {
-    Remove-Item env:CGO_ENABLED, env:GOOS, env:GOARCH
+    Remove-Item env:GOTOOLCHAIN, env:CGO_ENABLED, env:GOOS, env:GOARCH
 }
 $sha = git rev-parse --short HEAD
 "$sha $Stamp" | Set-Content -NoNewline (Join-Path $Dist 'build-info.txt')
