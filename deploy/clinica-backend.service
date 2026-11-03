@@ -1,0 +1,19 @@
+# Plantilla: deploy.sh reemplaza __APP_DIR__ y __USER__ al instalarla.
+[Unit]
+Description=Clinica backend (PocketBase)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__APP_DIR__
+Environment=HTTP_ADDR=127.0.0.1:8090
+EnvironmentFile=__APP_DIR__/.env
+ExecStart=__APP_DIR__/dist/pocketbase serve --http=${HTTP_ADDR} --dir=__APP_DIR__/pb_data
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
