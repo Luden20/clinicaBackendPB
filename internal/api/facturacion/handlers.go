@@ -21,11 +21,11 @@ func Register(app core.App) {
 		grp := se.Router.Group("/api/facturacion")
 		grp.POST("/facturar", facturar).Bind(apis.RequireAuth())
 		grp.POST("/revisar", revisar).Bind(apis.RequireAuth())
+		grp.POST("/documentos", obtenerDocumentos).Bind(apis.RequireAuth())
 		grp.POST("/webhook", webhook)
 		return se.Next()
 	})
 }
-
 
 var envioMu sync.Mutex
 
@@ -53,15 +53,14 @@ func facturar(e *core.RequestEvent) error {
 		return e.NotFoundError("Factura no encontrada", err)
 	}
 	switch cabecera.GetString("estado") {
-		case EstadoEnviadaSRI:
-			return e.BadRequestError("La factura ya fue enviada y está en proceso; usa /revisar", nil)
-		case EstadoAprobadaSRI:
-			return e.BadRequestError("La factura ya está aprobada por el SRI", nil)
+	case EstadoEnviadaSRI:
+		return e.BadRequestError("La factura ya fue enviada y está en proceso; usa /revisar", nil)
+	case EstadoAprobadaSRI:
+		return e.BadRequestError("La factura ya está aprobada por el SRI", nil)
 	}
 
 	parametros, err := e.App.FindFirstRecordByFilter("parametros_facturacion", "")
 	if err != nil {
-
 
 		return e.BadRequestError("No hay parametros_facturacion configurados", err)
 	}
@@ -162,11 +161,60 @@ func revisar(e *core.RequestEvent) error {
 	if err := aplicarResultado(e.App, cabecera, res, llamada.Body); err != nil {
 		return err
 	}
-	return e.JSON(http.StatusOK, map[string]any{
+	respuesta := map[string]any{
 		"ok":          cabecera.GetString("estado") == EstadoAprobadaSRI,
 		"estado":      cabecera.GetString("estado"),
 		"formiEstado": res.Estado,
 		"errores":     cabecera.Get("errores"),
+	}
+	// Aprobada: bajar el PDF y el XML que falten.
+	if cabecera.GetString("estado") == EstadoAprobadaSRI {
+		docs, err := guardarDocumentos(e.Request.Context(), e.App, cabecera, false)
+		if err != nil {
+			return err
+		}
+		respuesta["documentos"] = docs
+	}
+	return e.JSON(http.StatusOK, respuesta)
+}
+
+// obtenerDocumentos vuelve a descargar de Formi el PDF (RIDE) y el XML de una
+// factura aprobada y los guarda en pdf_file / xml_file. Sirve para facturas que
+// se aprobaron pero cuyos documentos no se llegaron a guardar.
+// Body: {"id": "<factura_cabecera.id>", "forzar": false}
+// forzar=true reemplaza los archivos aunque ya existan.
+func obtenerDocumentos(e *core.RequestEvent) error {
+	var body struct {
+		ID     string `json:"id"`
+		Forzar bool   `json:"forzar"`
+	}
+	if err := e.BindBody(&body); err != nil || strings.TrimSpace(body.ID) == "" {
+		return e.BadRequestError("Se espera JSON {\"id\": \"<id de factura_cabecera>\", \"forzar\": false}", err)
+	}
+	cabecera, err := e.App.FindRecordById("factura_cabecera", strings.TrimSpace(body.ID))
+	if err != nil {
+		return e.NotFoundError("Factura no encontrada", err)
+	}
+	if cabecera.GetString("estado") != EstadoAprobadaSRI {
+		return e.BadRequestError("La factura no está aprobada por el SRI; usa /revisar primero", nil)
+	}
+	if cabecera.GetInt("formi_id") == 0 {
+		return e.BadRequestError("La factura no tiene formi_id", nil)
+	}
+
+	docs, err := guardarDocumentos(e.Request.Context(), e.App, cabecera, body.Forzar)
+	if err != nil {
+		return err
+	}
+	status := http.StatusOK
+	if docs.Errores != nil {
+		status = http.StatusBadGateway
+	}
+	return e.JSON(status, map[string]any{
+		"ok":         docs.Errores == nil,
+		"documentos": docs,
+		"pdf_file":   cabecera.GetString("pdf_file"),
+		"xml_file":   cabecera.GetString("xml_file"),
 	})
 }
 
@@ -205,6 +253,9 @@ func webhook(e *core.RequestEvent) error {
 	if err := aplicarResultado(e.App, cabecera, res, raw); err != nil {
 		return err // 5xx → Formi reintenta
 	}
+	if cabecera.GetString("estado") == EstadoAprobadaSRI {
+		guardarDocumentosEnSegundoPlano(e.App, cabecera.Id)
+	}
 	return e.JSON(http.StatusOK, map[string]any{"recibido": true, "estado": cabecera.GetString("estado")})
 }
 
@@ -221,12 +272,6 @@ func aplicarResultado(app core.App, cabecera *core.Record, res respuestaFormi, r
 		cabecera.Set("errores", nil)
 		if res.ClaveAcceso != nil {
 			cabecera.Set("clave_acceso", *res.ClaveAcceso)
-		}
-		if res.PdfURL != nil {
-			cabecera.Set("pdf_url", *res.PdfURL)
-		}
-		if res.XmlURL != nil {
-			cabecera.Set("xml_url", *res.XmlURL)
 		}
 		if res.FechaAutorizacion != nil {
 			cabecera.Set("fecha_autorizacion", *res.FechaAutorizacion)

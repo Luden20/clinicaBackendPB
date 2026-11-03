@@ -36,8 +36,12 @@ type respuestaFormi struct {
 // llamadaFormi guarda la respuesta cruda para poder anotarla en "errores".
 type llamadaFormi struct {
 	Status int
+	Header http.Header
 	Body   []byte
 }
+
+// Límite de lectura de respuestas (el RIDE en PDF puede pesar varios MB).
+const maxRespuesta = 20 << 20
 
 func formiConfig() (baseURL, apiKey string, err error) {
 	apiKey = strings.TrimSpace(os.Getenv("FORMI_API_KEY"))
@@ -69,7 +73,7 @@ func formiRequest(ctx context.Context, method, path string, payload any) (*llama
 		return nil, err
 	}
 	req.Header.Set("X-Api-Key", apiKey)
-	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Accept", "application/json, application/pdf, application/xml, */*")
 	if payload != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
@@ -78,11 +82,11 @@ func formiRequest(ctx context.Context, method, path string, payload any) (*llama
 		return nil, fmt.Errorf("no se pudo contactar a Formi: %w", err)
 	}
 	defer res.Body.Close()
-	b, err := io.ReadAll(io.LimitReader(res.Body, 1<<20))
+	b, err := io.ReadAll(io.LimitReader(res.Body, maxRespuesta))
 	if err != nil {
 		return nil, fmt.Errorf("leyendo respuesta de Formi: %w", err)
 	}
-	return &llamadaFormi{Status: res.StatusCode, Body: b}, nil
+	return &llamadaFormi{Status: res.StatusCode, Header: res.Header, Body: b}, nil
 }
 
 // encolarFactura → POST /api/facturas
@@ -93,4 +97,10 @@ func encolarFactura(ctx context.Context, payload any) (*llamadaFormi, error) {
 // consultarFactura → GET /api/facturas/{id}
 func consultarFactura(ctx context.Context, formiID int64) (*llamadaFormi, error) {
 	return formiRequest(ctx, http.MethodGet, fmt.Sprintf("/api/facturas/%d", formiID), nil)
+}
+
+// descargarDocumento → GET /api/facturas/{id}/{formato}  (formato: "pdf" | "xml").
+// Solo responde 200 si la factura está AUTORIZADA; 409 si aún no.
+func descargarDocumento(ctx context.Context, formiID int64, formato string) (*llamadaFormi, error) {
+	return formiRequest(ctx, http.MethodGet, fmt.Sprintf("/api/facturas/%d/%s", formiID, formato), nil)
 }
