@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 
+	"pocketbaseCustom/internal/api/facturacion"
+
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -14,4 +16,5 @@ func Register(app core.App) {
 		})
 		return se.Next()
 	})
+	facturacion.Register(app)
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"pocketbaseCustom/internal/api"
+	"pocketbaseCustom/internal/commands"
 	"pocketbaseCustom/internal/crons"
 	"pocketbaseCustom/internal/hooks"
 	"pocketbaseCustom/internal/utils/email"
@@ -53,6 +54,7 @@ func main() {
 	})
 	print("iniciando backend clinicaBackendPB")
 	api.Register(app)
+	commands.Register(app)
 	hooks.Register(app)
 	crons.Register(app)
 

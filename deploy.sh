@@ -64,6 +64,19 @@ deploy() {
   fi
 
   chmod +x dist/pocketbase
+
+  # Backup nativo de PocketBase: va al S3 de Settings → Backups (si está activo;
+  # si no, a pb_data/backups). Antes de migrar: si falla, no se toca la base.
+  if [[ -d pb_data ]]; then
+    echo "==> Backup de PocketBase"
+    if ! dist/pocketbase backup --dir "$APP_DIR/pb_data" \
+         --name "pb_backup_predeploy_$(date -u +%Y%m%d%H%M%S).zip"; then
+      echo "!! Falló el backup de PocketBase: no se despliega, vuelvo a la versión anterior"
+      restore ""
+      exit 1
+    fi
+  fi
+
   echo "==> migrate up"
   if ! dist/pocketbase migrate up --dir "$APP_DIR/pb_data"; then
     echo "!! Falló la migración: restaurando binario y datos"
