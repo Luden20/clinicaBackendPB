@@ -29,7 +29,7 @@ type emitirFacturaRequest struct {
 }
 
 type facturaRequest struct {
-	Ambiente      string            `json:"ambiente"`
+	Ambiente      int               `json:"ambiente"` // 1 = pruebas, 2 = producción
 	Referencia    string            `json:"referencia,omitempty"`
 	Emisor        emisor            `json:"emisor"`
 	Comprador     comprador         `json:"comprador"`
@@ -205,15 +205,16 @@ var formasPagoSRI = map[string]string{
 // Ecuador continental: UTC-5 sin horario de verano.
 var zonaEcuador = time.FixedZone("ECT", -5*60*60)
 
-// El ambiente se guarda en PocketBase con los mismos valores que acepta Formi
-// y se envía tal cual.
-func normalizarAmbiente(v string) (string, error) {
-	v = strings.TrimSpace(v)
-	switch v {
-	case "Test", "Produccion":
-		return v, nil
+// ambiente es un select en PocketBase ("Test" | "Produccion"); Formi espera
+// un entero: 1 = pruebas, 2 = producción.
+func normalizarAmbiente(v string) (int, error) {
+	switch strings.TrimSpace(v) {
+	case "Test":
+		return 1, nil
+	case "Produccion":
+		return 2, nil
 	}
-	return "", invalida("parametros_facturacion.ambiente debe ser exactamente \"Test\" o \"Produccion\" (es %q)", v)
+	return 0, invalida("parametros_facturacion.ambiente debe ser \"Test\" o \"Produccion\" (es %q)", v)
 }
 
 func leerFirma(app core.App, parametros *core.Record) (nombre, base64Firma string, err error) {

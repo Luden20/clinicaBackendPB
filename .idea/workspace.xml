@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="migracion para modulo de facturas">
+    <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="facturacion fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -193,7 +193,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="init" />
     <MESSAGE value="fix d" />
     <MESSAGE value="migracojen" />
     <MESSAGE value="main uodate" />
@@ -218,6 +217,7 @@
     <MESSAGE value="email v1.11 footer" />
     <MESSAGE value="estadisticas 1.2" />
     <MESSAGE value="migracion para modulo de facturas" />
-    <option name="LAST_COMMIT_MESSAGE" value="migracion para modulo de facturas" />
+    <MESSAGE value="facturacion fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="facturacion fixes" />
   </component>
 </project>
