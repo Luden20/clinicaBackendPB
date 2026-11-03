@@ -205,14 +205,15 @@ var formasPagoSRI = map[string]string{
 // Ecuador continental: UTC-5 sin horario de verano.
 var zonaEcuador = time.FixedZone("ECT", -5*60*60)
 
+// El ambiente se guarda en PocketBase con los mismos valores que acepta Formi
+// y se envía tal cual.
 func normalizarAmbiente(v string) (string, error) {
-	switch strings.ToLower(strings.TrimSpace(v)) {
-	case "produccion", "producción":
-		return "Produccion", nil
-	case "test", "pruebas":
-		return "Test", nil
+	v = strings.TrimSpace(v)
+	switch v {
+	case "Test", "Produccion":
+		return v, nil
 	}
-	return "", invalida("parametros_facturacion.ambiente debe ser Test o Produccion (es %q)", v)
+	return "", invalida("parametros_facturacion.ambiente debe ser exactamente \"Test\" o \"Produccion\" (es %q)", v)
 }
 
 func leerFirma(app core.App, parametros *core.Record) (nombre, base64Firma string, err error) {
