@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"mime"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 
@@ -96,6 +97,19 @@ func guardarDocumentosEnSegundoPlano(app core.App, cabeceraID string) {
 			app.Logger().Warn("documentos factura: descarga incompleta (usar /api/facturacion/documentos)",
 				"factura", cabeceraID, "errores", res.Errores)
 		}
+
+		// Correo al cliente solo cuando el PDF se acaba de guardar en esta pasada:
+		// si el webhook se repite y los archivos ya estaban, no se reenvía.
+		if !slices.Contains(res.Guardados, "pdf") {
+			return
+		}
+		destino, err := enviarFacturaPorCorreo(app, cabecera, "")
+		if err != nil {
+			app.Logger().Warn("correo factura: no se envió (usar /api/facturacion/enviar-correo)",
+				"factura", cabeceraID, "error", err)
+			return
+		}
+		app.Logger().Info("correo factura: enviado", "factura", cabeceraID, "a", destino)
 	}()
 }
 

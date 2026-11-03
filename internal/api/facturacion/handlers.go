@@ -22,9 +22,39 @@ func Register(app core.App) {
 		grp.POST("/facturar", facturar).Bind(apis.RequireAuth())
 		grp.POST("/revisar", revisar).Bind(apis.RequireAuth())
 		grp.POST("/documentos", obtenerDocumentos).Bind(apis.RequireAuth())
+		grp.POST("/enviar-correo", enviarCorreo).Bind(apis.RequireAuth())
 		grp.POST("/webhook", webhook)
 		return se.Next()
 	})
+}
+
+// enviarCorreo manda (o reenvía) la factura aprobada por correo con el PDF y el
+// XML adjuntos, usando la plantilla "factura".
+// Body: {"id": "<factura_cabecera.id>", "correo": ""}  (correo vacío → el del cliente)
+func enviarCorreo(e *core.RequestEvent) error {
+	var body struct {
+		ID     string `json:"id"`
+		Correo string `json:"correo"`
+	}
+	if err := e.BindBody(&body); err != nil || strings.TrimSpace(body.ID) == "" {
+		return e.BadRequestError("Se espera JSON {\"id\": \"<id de factura_cabecera>\", \"correo\": \"opcional\"}", err)
+	}
+	cabecera, err := e.App.FindRecordById("factura_cabecera", strings.TrimSpace(body.ID))
+	if err != nil {
+		return e.NotFoundError("Factura no encontrada", err)
+	}
+	if cabecera.GetString("estado") != EstadoAprobadaSRI {
+		return e.BadRequestError("La factura no está aprobada por el SRI", nil)
+	}
+	if cabecera.GetString("pdf_file") == "" {
+		return e.BadRequestError("La factura no tiene el PDF guardado; usa /documentos primero", nil)
+	}
+
+	destino, err := enviarFacturaPorCorreo(e.App, cabecera, body.Correo)
+	if err != nil {
+		return e.JSON(http.StatusBadGateway, map[string]any{"ok": false, "mensaje": err.Error()})
+	}
+	return e.JSON(http.StatusOK, map[string]any{"ok": true, "correo": destino})
 }
 
 var envioMu sync.Mutex
@@ -307,3 +337,5 @@ func rawJSON(b []byte) any {
 	}
 	return map[string]any{"body": string(b)}
 }
+
+//Correo

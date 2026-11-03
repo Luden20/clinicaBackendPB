@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bda6e11f-6e4d-4d47-82a1-8df71324daad" name="Changes" comment="facturacion fixes">
-      <change afterPath="$PROJECT_DIR$/internal/api/facturacion/documentos.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/1793674065_collections_snapshot.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/1793674380_collections_snapshot.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/api/facturacion/formi.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/api/facturacion/formi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/api/facturacion/documentos.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/api/facturacion/documentos.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/api/facturacion/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/api/facturacion/handlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/1793668341_factura_formi.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
